@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2019 by anonymous (http://jsbin.com/hocukukiva/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Item Recommendation">
+  <meta name="author" content="Your Name">
+  <title>Item Recommendation Final</title>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="styles/main.css">
+<style id="jsbin-css">
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: #434343;
+	color: #FFFFFF;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
+	font-size: 0.9em;
+}
+
+ul {
+	list-style: none;
+}
+
+/**
+ * top header
+ */
+.top-header {
+	align-items: center;
+	background: #DF574B;
+	box-shadow: 0px 2px 10px #333333;
+	display: flex;
+	height: 60px;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 1;
+}
+
+.avatar {
+	background: #FFFFFF;
+	border-radius: 50%;
+	color: #333C4D;
+	height: 40px;
+	margin-right: 20px;
+	padding-left: 9px;
+	padding-top: 5px;
+	width: 40px;
+}
+
+/**
+ * top navigation
+ */
+.top-nav {
+	flex: 1;
+}
+
+.top-nav a {
+	color: #F9F9F9;
+	font-weight: 400;
+	margin-left: 20px;
+	text-decoration: none;
+}
+
+#welcome-msg {
+	border-right: 1px solid #FFFFFF;
+	padding-right: 10px;
+}
+
+/**
+ * main container
+ */
+.container {
+	margin: 60px auto;
+	max-width: 1000px;
+	min-width: 600px;
+}
+
+/**
+ * main header
+ */
+.container>header {
+	align-items: center;
+	background:
+		url('http://folkartcarsi.com/img/4.jpg')
+		no-repeat 50% 50%;
+	background-size: 100%;
+	display: flex;
+	height: 250px;
+}
+
+.container>header p {
+	border-left: 1px solid #FFFFFF;
+	font-weight: 400;
+	font-size: 2em;
+	line-height: 1em;
+	margin-left: 220px;
+	padding-left: 5px;
+}
+
+.container>header span {
+	color: #FBAF41;
+}
+
+/**
+ * main section
+ */
+.main-section {
+	background: #F3BB43;
+}
+
+/**
+ * aside
+ */
+#item-nav {
+	float: left;
+	width: 180px;
+}
+
+.nav-icon {
+	color: #624630;
+	padding: 20px;
+	text-align: center;
+}
+
+/**
+ * main navigation
+ */
+.main-nav-btn {
+	background: none;
+	border-top: 1px solid #FFFFFF;
+	color: #FFFFFF;
+	display: block;
+	padding: 20px;
+	text-align: left;
+	text-decoration: none;
+}
+
+.main-nav-btn:hover {
+	background: rgba(255, 255, 255, 0.8);
+	color: #624630;
+}
+
+.main-nav-btn.active {
+	background: #F2EBD9;
+	color: #624630;
+}
+
+.main-nav-btn i {
+	width: 20px;
+}
+
+/**
+ * item list
+ */
+#item-list {
+	background: #F2EBD9;
+	color: #624630;
+	list-style: none;
+	margin-left: 180px;
+	min-height: 250px;
+	padding: 10px;
+}
+
+#item-list .notice {
+	font-size: 16px;
+	padding: 60px;
+	text-align: center;
+}
+
+/**
+ * item
+ */
+.item {
+	align-items: center;
+	border-bottom: 1px solid #FFFFFF;
+	display: flex;
+	margin: 10px;
+	padding: 15px;
+	transition: background-color 100ms linear;
+}
+
+.item:last-child {
+	border: none;
+}
+
+.item:hover {
+	background: rgba(255, 255, 255, 0.8);
+	transition: background-color 100ms linear;
+}
+
+.item img {
+	border: 1px solid #FFFFFF;
+	height: 80px;
+	width: 80px;
+}
+
+.item>div:first-of-type {
+	flex: 1;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.item-name {
+	color: #624630;
+	font-weight: 400;
+	text-decoration: none;
+}
+
+.item-name:hover {
+	text-decoration: underline;
+}
+
+.item-address {
+	line-height: 20px;
+	padding-right: 20px;
+	text-align: right;
+}
+
+.stars {
+	align-items: center;
+	display: flex;
+	padding-top: 10px;
+}
+
+.fav-link {
+	border-left: 1px solid #FFFFFF;
+	cursor: pointer;
+	line-height: 60px;
+	text-align: center;
+	width: 60px;
+}
+
+.fav-link:hover {
+	color: #F13F3F;
+}
+
+/**
+ * footer section
+ */
+footer {
+	background: #434343;
+	font-size: 0.8em;
+	height: 200px;
+	position: relative;
+}
+
+footer p {
+	text-align: center;
+}
+
+footer p.title {
+	font-size: 1.2em;
+	padding: 15px;
+}
+
+footer ul {
+	align-items: center;
+	display: flex;
+	padding: 20px;
+}
+
+footer ul li {
+	flex: 1;
+}
+</style>
+</head>
+<body>
+  <header class="top-header">
+    <nav class="top-nav">
+      <a href="#">Home</a>
+      <a href="#">Contact</a>
+      <a href="#">About</a>
+    </nav>
+    <span id="welcome-msg"></span>
+    <i id="avatar" class="avatar fa fa-user fa-2x"></i>
+  </header>
+  
+  <div class="container">
+    <header>
+      <p>
+        <span>Item</span>
+        <br /> Recommendation
+      </p>
+    </header>
+
+    <section class="main-section">
+      <aside id="item-nav">
+        <div class="nav-icon">
+          <i class="fa fa-sitemap fa-2x"></i>
+        </div>
+        <nav class="main-nav">
+          <a href="#" id="nearby-btn" class="main-nav-btn active">
+            <i class="fa fa-map-marker"></i> Nearby
+          </a>
+          <a href="#" id="fav-btn" class="main-nav-btn">
+            <i class="fa fa-heart"></i> My Favorites
+          </a>
+          <a href="#" id="recommend-btn" class="main-nav-btn">
+            <i class="fa fa-thumbs-up"></i> Recommendation
+          </a>
+        </nav>
+      </aside>
+
+      <ul id="item-list">
+        <li class="item">
+          <img alt="item image" src="https://s3-media3.fl.yelpcdn.com/bphoto/EmBj4qlyQaGd9Q4oXEhEeQ/ms.jpg" />
+          <div>
+            <a class="item-name" href="#">Item</a>
+            <p class="item-category">Vegetarian</p>
+            <div class="stars">
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+            </div>
+          </div>
+          <p class="item-address">699 Calderon Ave<br/>Mountain View<br/> CA</p>
+          <div class="fav-link">
+            <i class="fa fa-heart"></i>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>
+  
+  <footer>
+    <p class="title">What We Do</p>
+    <p>"Help you find the best place around."</p>
+    <ul>
+      <li>
+        <p><i class="fa fa-map-o fa-2x"></i></p>
+        <p>LaiOffer office, CA</p>
+      </li>
+      <li>
+        <p><i class="fa fa-envelope-o fa-2x"></i></p>
+        <p>info@laioffer.com</p>
+      </li>
+      <li>
+        <p><i class="fa fa-phone fa-2x"></i></p>
+        <p>+1 800 123 456</p>
+      </li>
+    </ul>
+  </footer>
+  
+  <script src="https://rawgit.com/emn178/js-md5/master/build/md5.min.js"></script>
+  <script src="scripts/main.js"></script>
+<script id="jsbin-javascript">
+(function() {
+
+    /**
+     * Variables
+     */
+    var user_id = '1111';
+    var user_fullname = 'John';
+    var lng = -122.08;
+    var lat = 37.38;
+
+    /**
+     * Initialize
+     */
+    function init() {
+        // Register event listeners
+        $('nearby-btn').addEventListener('click', loadNearbyItems);
+        $('fav-btn').addEventListener('click', loadFavoriteItems);
+        $('recommend-btn').addEventListener('click', loadRecommendedItems);
+
+        var welcomeMsg = $('welcome-msg');
+        welcomeMsg.innerHTML = 'Welcome, ' + user_fullname;
+        initGeoLocation();
+    }
+
+    function initGeoLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(onPositionUpdated,
+                onLoadPositionFailed, {
+                    maximumAge: 60000
+                });
+            showLoadingMessage('Retrieving your location...');
+        } else {
+            onLoadPositionFailed();
+        }
+    }
+
+    function onPositionUpdated(position) {
+        lat = position.coords.latitude;
+        lng = position.coords.longitude;
+
+        loadNearbyItems();
+    }
+
+    function onLoadPositionFailed() {
+        console.warn('navigator.geolocation is not available');
+        getLocationFromIP();
+    }
+
+    function getLocationFromIP() {
+        // Get location from http://ipinfo.io/json
+        var url = 'http://ipinfo.io/json'
+        var req = null;
+        ajax('GET', url, req, function(res) {
+            var result = JSON.parse(res);
+            if ('loc' in result) {
+                var loc = result.loc.split(',');
+                lat = loc[0];
+                lng = loc[1];
+            } else {
+                console.warn('Getting location by IP failed.');
+            }
+            loadNearbyItems();
+        });
+    }
+
+    // -----------------------------------
+    // Helper Functions
+    // -----------------------------------
+
+    /**
+     * A helper function that makes a navigation button active
+     * 
+     * @param btnId -
+     *            The id of the navigation button
+     */
+    function activeBtn(btnId) {
+        var btns = document.getElementsByClassName('main-nav-btn');
+
+        // deactivate all navigation buttons
+        for (var i = 0; i < btns.length; i++) {
+            btns[i].className = btns[i].className.replace(/\bactive\b/, '');
+        }
+
+        // active the one that has id = btnId
+        var btn = $(btnId);
+        btn.className += ' active';
+    }
+
+    function showLoadingMessage(msg) {
+        var itemList = $('item-list');
+        itemList.innerHTML = '<p class="notice"><i class="fa fa-spinner fa-spin"></i> ' +
+            msg + '</p>';
+    }
+
+    function showWarningMessage(msg) {
+        var itemList = $('item-list');
+        itemList.innerHTML = '<p class="notice"><i class="fa fa-exclamation-triangle"></i> ' +
+            msg + '</p>';
+    }
+
+    function showErrorMessage(msg) {
+        var itemList = $('item-list');
+        itemList.innerHTML = '<p class="notice"><i class="fa fa-exclamation-circle"></i> ' +
+            msg + '</p>';
+    }
+
+    /**
+     * A helper function that creates a DOM element <tag options...>
+     * 
+     * @param tag
+     * @param options
+     * @returns
+     */
+    function $(tag, options) {
+        if (!options) {
+            return document.getElementById(tag);
+        }
+
+        var element = document.createElement(tag);
+
+        for (var option in options) {
+            if (options.hasOwnProperty(option)) {
+                element[option] = options[option];
+            }
+        }
+
+        return element;
+    }
+
+    function hideElement(element) {
+        element.style.display = 'none';
+    }
+
+    function showElement(element, style) {
+        var displayStyle = style ? style : 'block';
+        element.style.display = displayStyle;
+    }
+
+    /**
+     * AJAX helper
+     * 
+     * @param method -
+     *            GET|POST|PUT|DELETE
+     * @param url -
+     *            API end point
+     * @param callback -
+     *            This the successful callback
+     * @param errorHandler -
+     *            This is the failed callback
+     */
+    function ajax(method, url, data, callback, errorHandler) {
+        var xhr = new XMLHttpRequest();
+
+        xhr.open(method, url, true);
+
+        xhr.onload = function() {
+        	if (xhr.status === 200) {
+        		callback(xhr.responseText);
+        	} else {
+        		errorHandler();
+        	}
+        };
+
+        xhr.onerror = function() {
+            console.error("The request couldn't be completed.");
+            errorHandler();
+        };
+
+        if (data === null) {
+            xhr.send();
+        } else {
+            xhr.setRequestHeader("Content-Type",
+                "application/json;charset=utf-8");
+            xhr.send(data);
+        }
+    }
+
+    // -------------------------------------
+    // AJAX call server-side APIs
+    // -------------------------------------
+
+    /**
+     * API #1 Load the nearby items API end point: [GET]
+     * /Dashi/search?user_id=1111&lat=37.38&lon=-122.08
+     */
+    function loadNearbyItems() {
+        console.log('loadNearbyItems');
+        activeBtn('nearby-btn');
+
+        // The request parameters
+        var url = './search';
+        var params = 'user_id=' + user_id + '&lat=' + lat + '&lon=' + lng;
+        var req = JSON.stringify({});
+
+        // display loading message
+        showLoadingMessage('Loading nearby items...');
+
+        // make AJAX call
+        ajax('GET', url + '?' + params, req,
+            // successful callback
+            function(res) {
+                var items = JSON.parse(res);
+                if (!items || items.length === 0) {
+                    showWarningMessage('No nearby item.');
+                } else {
+                    listItems(items);
+                }
+            },
+            // failed callback
+            function() {
+                showErrorMessage('Cannot load nearby items.');
+            });
+    }
+
+    /**
+     * API #2 Load favorite (or visited) items API end point: [GET]
+     * /Dashi/history?user_id=1111
+     */
+    function loadFavoriteItems() {
+        activeBtn('fav-btn');
+
+        // The request parameters
+        var url = './history';
+        var params = 'user_id=' + user_id;
+        var req = JSON.stringify({});
+
+        // display loading message
+        showLoadingMessage('Loading favorite items...');
+
+        // make AJAX call
+        ajax('GET', url + '?' + params, req, function(res) {
+            var items = JSON.parse(res);
+            if (!items || items.length === 0) {
+                showWarningMessage('No favorite item.');
+            } else {
+                listItems(items);
+            }
+        }, function() {
+            showErrorMessage('Cannot load favorite items.');
+        });
+    }
+
+    /**
+     * API #3 Load recommended items API end point: [GET]
+     * /Dashi/recommendation?user_id=1111
+     */
+    function loadRecommendedItems() {
+        activeBtn('recommend-btn');
+
+        // The request parameters
+        var url = './recommendation';
+        var params = 'user_id=' + user_id + '&lat=' + lat + '&lon=' + lng;
+
+        var req = JSON.stringify({});
+
+        // display loading message
+        showLoadingMessage('Loading recommended items...');
+
+        // make AJAX call
+        ajax(
+            'GET',
+            url + '?' + params,
+            req,
+            // successful callback
+            function(res) {
+                var items = JSON.parse(res);
+                if (!items || items.length === 0) {
+                    showWarningMessage('No recommended item. Make sure you have favorites.');
+                } else {
+                    listItems(items);
+                }
+            },
+            // failed callback
+            function() {
+                showErrorMessage('Cannot load recommended items.');
+            });
+    }
+
+    /**
+     * API #4 Toggle favorite (or visited) items
+     * 
+     * @param item_id -
+     *            The item business id
+     * 
+     * API end point: [POST]/[DELETE] /Dashi/history request json data: {
+     * user_id: 1111, visited: [a_list_of_business_ids] }
+     */
+    function changeFavoriteItem(item_id) {
+        // Check whether this item has been visited or not
+        var li = $('item-' + item_id);
+        var favIcon = $('fav-icon-' + item_id);
+        var favorite = li.dataset.favorite !== 'true';
+
+        // The request parameters
+        var url = './history';
+        var req = JSON.stringify({
+            user_id: user_id,
+            favorite: [item_id]
+        });
+        var method = favorite ? 'POST' : 'DELETE';
+
+        ajax(method, url, req,
+            // successful callback
+            function(res) {
+                var result = JSON.parse(res);
+                if (result.result === 'SUCCESS') {
+                    li.dataset.favorite = favorite;
+                    favIcon.className = favorite ? 'fa fa-heart' : 'fa fa-heart-o';
+                }
+            });
+    }
+
+    // -------------------------------------
+    // Create item list
+    // -------------------------------------
+
+    /**
+     * List items
+     * 
+     * @param items -
+     *            An array of item JSON objects
+     */
+    function listItems(items) {
+        // Clear the current results
+        var itemList = $('item-list');
+        itemList.innerHTML = '';
+
+        for (var i = 0; i < items.length; i++) {
+            addItem(itemList, items[i]);
+        }
+    }
+
+    /**
+     * Add item to the list
+     * 
+     * @param itemList -
+     *            The
+     *            <ul id="item-list">
+     *            tag
+     * @param item -
+     *            The item data (JSON object)
+     */
+    function addItem(itemList, item) {
+        var item_id = item.item_id;
+
+        // create the <li> tag and specify the id and class attributes
+        var li = $('li', {
+            id: 'item-' + item_id,
+            className: 'item'
+        });
+
+        // set the data attribute
+        li.dataset.item_id = item_id;
+        li.dataset.favorite = item.favorite;
+
+        // item image
+        if (item.image_url) {
+            li.appendChild($('img', {
+                src: item.image_url
+            }));
+        } else {
+            li.appendChild($(
+                'img', {
+                    src: 'https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png'
+                }))
+        }
+        // section
+        var section = $('div', {});
+
+        // title
+        var title = $('a', {
+            href: item.url,
+            target: '_blank',
+            className: 'item-name'
+        });
+        title.innerHTML = item.name;
+        section.appendChild(title);
+
+        // category
+        var category = $('p', {
+            className: 'item-category'
+        });
+        category.innerHTML = 'Category: ' + item.categories.join(', ');
+        section.appendChild(category);
+
+        // TODO(vincent). here we might have a problem showing 3.5 as 3.
+        // stars
+        var stars = $('div', {
+            className: 'stars'
+        });
+
+        for (var i = 0; i < item.rating; i++) {
+            var star = $('i', {
+                className: 'fa fa-star'
+            });
+            stars.appendChild(star);
+        }
+
+        if (('' + item.rating).match(/\.5$/)) {
+            stars.appendChild($('i', {
+                className: 'fa fa-star-half-o'
+            }));
+        }
+
+        section.appendChild(stars);
+
+        li.appendChild(section);
+
+        // address
+        var address = $('p', {
+            className: 'item-address'
+        });
+
+        address.innerHTML = item.address.replace(/,/g, '<br/>').replace(/\"/g,
+            '');
+        li.appendChild(address);
+
+        // favorite link
+        var favLink = $('p', {
+            className: 'fav-link'
+        });
+
+        favLink.onclick = function() {
+            changeFavoriteItem(item_id);
+        };
+
+        favLink.appendChild($('i', {
+            id: 'fav-icon-' + item_id,
+            className: item.favorite ? 'fa fa-heart' : 'fa fa-heart-o'
+        }));
+
+        li.appendChild(favLink);
+
+        itemList.appendChild(li);
+    }
+
+    init();
+
+})();
+
+</script>
+</body>
+</html>
